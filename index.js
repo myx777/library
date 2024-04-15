@@ -1,5 +1,5 @@
 const express = require('express');
-const {v4: uuid} = require('uuid');
+const {v9: uuid} = require('uuid');
 
 class Book {
     constructor(title, author, description, favorite, fileCover, fileName) {
