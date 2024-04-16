@@ -1,100 +1,102 @@
-const express = require('express')
-const { v9: uuid } = require('uuid')
+const express = require("express");
+const { v9: uuid } = require("uuid");
 
 class Book {
-    constructor(title, author, description, favorite, fileCover, fileName) {
-        this.id = uuid()
-        this.title = title
-        this.author = author
-        this.description = description
-        this.favorite = favorite
-        this.fileCover = fileCover
-        this.fileName = fileName
-    }
+  constructor(title, author, description, favorite, fileCover, fileName) {
+    this.id = uuid();
+    this.title = title;
+    this.author = author;
+    this.description = description;
+    this.favorite = favorite;
+    this.fileCover = fileCover;
+    this.fileName = fileName;
+  }
 }
 
 class User {
-    constructor(mail) {
-        this.id = uuid()
-        this.mail = mail
-    }
+  constructor(mail) {
+    this.id = uuid();
+    this.mail = mail;
+  }
 }
 
 const store = {
-    books: [],
-    users: [],
-}
+  books: [],
+  users: [],
+};
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
-app.get('/api/books/', (req, res) => {
-    const { books } = store
-    res.json(books)
-})
+app.get("/api/books/", (req, res) => {
+  const { books } = store;
+  res.json(books);
 
-app.get('/api/books/:id', (req, res) => {
-    const { id } = req.params
-    const { books } = store
-    const idx = books.findIndex((el) => el.id === id)
+  console.log(res);
+});
 
-    if (idx !== -1) {
-        res.json(books[idx])
-    } else {
-        res.status(404)
-        res.json('404 | Книга не найдена')
-    }
-})
+app.get("/api/books/:id", (req, res) => {
+  const { id } = req.params;
+  const { books } = store;
+  const idx = books.findIndex((el) => el.id === id);
 
-app.post('/api/user/login', (req, res) => {
-    const { user } = store
-    const { id, mail } = req.body
+  if (idx !== -1) {
+    res.json(books[idx]);
+  } else {
+    res.status(404);
+    res.json("404 | Книга не найдена");
+  }
+});
 
-    const newUser = new User(id, mail)
-    user.push(newUser)
+app.post("/api/user/login", (req, res) => {
+  const { user } = store;
+  const { id, mail } = req.body;
 
-    res.status(201)
-    res.json(newUser)
-})
+  const newUser = new User(id, mail);
+  user.push(newUser);
 
-app.put('/api/books/:id', (req, res) => {
-    const { books } = store
-    const { id } = req.params
-    const idx = books.findIndex((el) => el.id === id)
+  res.status(201);
+  res.json(newUser);
+});
 
-    if (idx !== -1) {
-        books[idx] = {
-            ...books[idx],
-            title,
-            author,
-            description,
-            favorite,
-            fileCover,
-            fileName,
-        }
+app.put("/api/books/:id", (req, res) => {
+  const { books } = store;
+  const { id } = req.params;
+  const idx = books.findIndex((el) => el.id === id);
 
-        res.json(books[idx])
-    } else {
-        res.status(404)
-        res.json('404 | Книга не найдена')
-    }
-})
+  if (idx !== -1) {
+    books[idx] = {
+      ...books[idx],
+      title,
+      author,
+      description,
+      favorite,
+      fileCover,
+      fileName,
+    };
 
-app.delete('/api/books/:id', (req, res) => {
-    const { books } = store
-    const { id } = req.params
-    const idx = books.findIndex((el) => el.id === id)
+    res.json(books[idx]);
+  } else {
+    res.status(404);
+    res.json("404 | Книга не найдена");
+  }
+});
 
-    if (idx !== -1) {
-        books.splice(idx, 1)
-        res.json('ok')
-    } else {
-        res.status(404)
-        res.json('404 | Книга не найдена')
-    }
-})
+app.delete("/api/books/:id", (req, res) => {
+  const { books } = store;
+  const { id } = req.params;
+  const idx = books.findIndex((el) => el.id === id);
 
-const port = process.env.PORT
+  if (idx !== -1) {
+    books.splice(idx, 1);
+    res.json("ok");
+  } else {
+    res.status(404);
+    res.json("404 | Книга не найдена");
+  }
+});
+
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log('Server is running')
-})
+  console.log("Server is running");
+});
