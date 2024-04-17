@@ -4,7 +4,10 @@ const userRouter = require('./src/user/routes/userRouter');
 
 const app = express();
 
+//роуты книг (добавление, удаление и тд
 app.use('/api', bookRouter);
+
+//роуты юзера (логин)
 app.use('/api', userRouter);
 
 //загрузка книги

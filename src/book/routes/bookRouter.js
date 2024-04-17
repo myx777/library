@@ -1,5 +1,6 @@
 const express = require('express');
 const store = require('../../store/store');
+const bookFile = require('../../../middleware/bookFile');
 
 const router = express.Router();
 router.use(express.json());
@@ -74,6 +75,17 @@ router.delete('/books/:id', (req, res) => {
         res.status(404);
         res.json('404 | Книга не найдена');
     }
+});
+
+/**
+ * добавление книги
+ */
+router.post('/books/upload', bookFile.single('book'), (req, res) => {
+    if (req.file) {
+        const { path } = req.file;
+        res.json({ path });
+    }
+    res.json();
 });
 
 module.exports = router;
