@@ -1,7 +1,7 @@
 const express = require('express');
 const store = require('../../store/store');
-const router = express.Router();
 
+const router = express.Router();
 router.use(express.json());
 
 /**

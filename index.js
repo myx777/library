@@ -7,6 +7,9 @@ const app = express();
 app.use('/api', bookRouter);
 app.use('/api', userRouter);
 
+//загрузка книги
+app.use('/api/books/:id/download', express.static(__dirname + '/public/books'));
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running ${PORT}`);
