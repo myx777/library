@@ -3,6 +3,9 @@ const bookRouter = require('./src/book/routes/bookRouter');
 const userRouter = require('./src/user/routes/userRouter');
 
 const app = express();
+//миделлавр для разбора форм
+app.use(express.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
 
 //роуты книг (добавление, удаление и тд
 app.use('/api', bookRouter);
