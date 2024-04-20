@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'beerMoney';
+    src: url('../../fonts/beermoney.woff') format('woff2'), /* для WOFF2 */ url('../../fonts/beermoney.woff2') format('woff'); /* для WOFF */
+
+}
+
+body {
+    font-family: 'beerMoney', sans-serif;
+}
+
+
+header {
+    background-image: linear-gradient(#ffc107 25%, #c6acae 50%, #fd7e14 75%);
+}

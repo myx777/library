@@ -11,6 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
 
+// Указываем Express обслуживать статические файлы из папки "public"
+// Это позволит серверу обслуживать файлы из папки "public" без необходимости написания отдельных обработчиков маршрутов для каждого файла
+app.use(express.static('public'));
+
 //роут главной страницы
 app.use('/', indexRouter);
 

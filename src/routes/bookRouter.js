@@ -1,4 +1,5 @@
 const express = require('express');
+const Book = require('../book/BookClass');
 const store = require('../store/store');
 const bookFile = require('../../middleware/bookFile');
 
@@ -82,10 +83,22 @@ router.delete('/books/:id', (req, res) => {
  */
 router.post('/books/upload', bookFile.single('book'), (req, res) => {
     if (req.file) {
-        const { path } = req.file;
-        res.json({ path });
+        const { path, originalname } = req.file;
+
+        const newBook = new Book(
+            req.body.title,
+            req.body.author,
+            req.body.description,
+            false,
+            req.body.fileCover,
+            originalname,
+            path,
+        );
+        store.books.push(newBook);
+        res.json(newBook);
+    } else {
+        res.status(400).json({ error: 'Не удалось загрузить книгу' });
     }
-    res.json();
 });
 
 module.exports = router;
