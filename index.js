@@ -1,11 +1,18 @@
 const express = require('express');
-const bookRouter = require('./src/book/routes/bookRouter');
-const userRouter = require('./src/user/routes/userRouter');
+const indexRouter = require('./src/routes/indexRouter');
+const bookRouter = require('./src/routes/bookRouter');
+const userRouter = require('./src/routes/userRouter');
 
 const app = express();
 //миделлавр для разбора форм
 app.use(express.urlencoded({ extended: true }));
+
+//шаблонизатор ejs + смена пути со стандартного
 app.set('view engine', 'ejs');
+app.set('views', 'src/views');
+
+//роут главной страницы
+app.use('/', indexRouter);
 
 //роуты книг (добавление, удаление и тд
 app.use('/api', bookRouter);

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const store = require('../../store/store');
-const UserClass = require('../UserClass');
+const store = require('../store/store');
+const UserClass = require('../user/UserClass');
 
 router.use(express.json());
 
