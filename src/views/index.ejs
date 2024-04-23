@@ -1,3 +1,14 @@
-<%- include('./port/layout-start') %>
+<%- include('./port/layout-start', { title: title }) %>
 <%- include('./port/menu') %>
+
+<!--!! ToDo !!-->
+
+<main>
+	<section>
+		<div class="h-100 p-5 bg-body-tertiary border rounded-3">
+			<h1><%= title %></h1>
+			<!--			<button class="btn btn-outline-light" type="button">Example button</button>-->
+		</div>
+	</section>
+</main>
 <%- include('./port/layout-end') %>

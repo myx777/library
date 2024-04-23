@@ -1,0 +1,9 @@
+<%- include('../port/layout-start', { title: title }) %>
+<%- include('../port/menu') %>
+
+<form action="/api/books" method="post" enctype="multipart/form-data">
+	<input type="file" name="book">
+	<button type="submit">Загрузить книгу</button>
+</form>
+
+<%- include('../port/layout-end') %>

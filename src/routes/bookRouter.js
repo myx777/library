@@ -6,38 +6,63 @@ const bookFile = require('../../middleware/bookFile');
 const router = express.Router();
 router.use(express.json());
 
-/**
- * запрос всех книг
- */
-router.get('/books', (req, res) => {
-    const { books } = store;
-    res.json(books);
+// отрисовка страницы загрузки новой книги
+router.get('/books/create', (req, res) => {
+    res.render('book/create', {
+        title: 'Загрузка книги',
+    });
 });
 
-/**
- * запрос книги по id
- */
-router.get('/books/:id', (req, res) => {
+// отрисовка страницы просмотра книги
+router.get('/books/view/:id', (req, res) => {
     const { id } = req.params;
     const { books } = store;
     const idx = books.findIndex((el) => el.id === id);
 
     if (idx !== -1) {
-        res.json(books[idx]);
+        res.render('book/view', {
+            title: 'book | update',
+            book: books[idx],
+        });
     } else {
         res.status(404);
         res.json('404 | Книга не найдена');
     }
 });
 
-/**
- * исправление книги
- */
-router.put('/books/:id', (req, res) => {
+// запрос всех книг
+router.get('/books', (req, res) => {
+    const { books } = store;
+    res.render('book/index', {
+        title: 'Books',
+        books: books,
+    });
+});
+
+// запрос книги по id
+router.get('/books/update/:id', (req, res) => {
+    const { id } = req.params;
+    const { books } = store;
+    const idx = books.findIndex((el) => el.id === id);
+
+    if (idx !== -1) {
+        res.render('book/update', {
+            title: 'book | update',
+            book: books[idx],
+        });
+    } else {
+        res.status(404);
+        res.json('404 | Книга не найдена');
+    }
+});
+
+// исправление книги
+router.post('/books/update/:id', (req, res) => {
     const { books } = store;
     const { id } = req.params;
     const idx = books.findIndex((el) => el.id === id);
     console.log(req.body);
+    console.log(req.body.title);
 
     if (idx !== -1) {
         const updatedBook = { ...books[idx] };
@@ -54,34 +79,29 @@ router.put('/books/:id', (req, res) => {
 
         // Обновляем книгу в массиве
         books[idx] = updatedBook;
-
-        res.json(books[idx]);
+        res.redirect(301, '/api/books');
     } else {
         res.status(404).json('404 | Книга не найдена');
     }
 });
 
-/**
- * удаление книги
- */
-router.delete('/books/:id', (req, res) => {
+// удаление книги
+router.post('/books/:id', (req, res) => {
     const { books } = store;
     const { id } = req.params;
     const idx = books.findIndex((el) => el.id === id);
 
     if (idx !== -1) {
         books.splice(idx, 1);
-        res.json('ok');
+        res.redirect(301, '/api/books');
     } else {
         res.status(404);
         res.json('404 | Книга не найдена');
     }
 });
 
-/**
- * добавление книги
- */
-router.post('/books/upload', bookFile.single('book'), (req, res) => {
+// добавление книги
+router.post('/books', bookFile.single('book'), (req, res) => {
     if (req.file) {
         const { path, originalname } = req.file;
 
@@ -95,7 +115,7 @@ router.post('/books/upload', bookFile.single('book'), (req, res) => {
             path,
         );
         store.books.push(newBook);
-        res.json(newBook);
+        res.redirect(301, '/api/books');
     } else {
         res.status(400).json({ error: 'Не удалось загрузить книгу' });
     }

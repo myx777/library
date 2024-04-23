@@ -1,0 +1,29 @@
+<%- include('../port/layout-start', { title: title }) %>
+<%- include('../port/menu') %>
+
+<h2><%= title %></h2>
+<div class="row">
+	<div class="card">
+		<div class="card-body">
+			<form method="post" class="mt-5">
+				<% for (let key in book) { %>
+				<div class="form-group">
+					<label for="inputTitle"><%= key %></label>
+					<input type="text"
+						   value="<%= book[key] %>"
+						   name="<%= key %>"
+						   class="form-control"
+						   id="inputTitle">
+				</div>
+				<% } %>
+				<input type="hidden" name="_method" value="PUT">
+				<div class="form-group text-right ">
+					<button type="submit" class="btn btn-primary">Сохранить</button>
+				</div>
+			</form>
+		
+		</div>
+	</div>
+</div>
+
+<%- include('../port/layout-end') %>
