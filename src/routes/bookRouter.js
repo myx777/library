@@ -25,8 +25,7 @@ router.get('/books/view/:id', (req, res) => {
             book: books[idx],
         });
     } else {
-        res.status(404);
-        res.json('404 | Книга не найдена');
+        res.status(404).redirect('/404');
     }
 });
 
@@ -51,8 +50,7 @@ router.get('/books/update/:id', (req, res) => {
             book: books[idx],
         });
     } else {
-        res.status(404);
-        res.json('404 | Книга не найдена');
+        res.status(404).redirect('/404');
     }
 });
 
@@ -81,7 +79,7 @@ router.post('/books/update/:id', (req, res) => {
         books[idx] = updatedBook;
         res.redirect(301, '/api/books');
     } else {
-        res.status(404).json('404 | Книга не найдена');
+        res.status(404).redirect('/404');
     }
 });
 
@@ -95,8 +93,7 @@ router.post('/books/:id', (req, res) => {
         books.splice(idx, 1);
         res.redirect(301, '/api/books');
     } else {
-        res.status(404);
-        res.json('404 | Книга не найдена');
+        res.status(404).redirect('/404');
     }
 });
 
@@ -117,7 +114,7 @@ router.post('/books', bookFile.single('book'), (req, res) => {
         store.books.push(newBook);
         res.redirect(301, '/api/books');
     } else {
-        res.status(400).json({ error: 'Не удалось загрузить книгу' });
+        res.status(404).redirect('/404');
     }
 });
 

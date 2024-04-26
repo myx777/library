@@ -2,6 +2,7 @@ const express = require('express');
 const indexRouter = require('./src/routes/indexRouter');
 const bookRouter = require('./src/routes/bookRouter');
 const userRouter = require('./src/routes/userRouter');
+const errorMiddleware = require('./middleware/404');
 
 const app = express();
 //миделлавр для разбора форм
@@ -26,6 +27,9 @@ app.use('/api', userRouter);
 
 //загрузка книги
 app.use('/api/books/:id/download', express.static(__dirname + '/public/books'));
+
+// использование миделвара с ошибкой
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
