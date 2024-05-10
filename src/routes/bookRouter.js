@@ -1,7 +1,7 @@
 const express = require('express');
 const Book = require('../book/BookClass');
 const store = require('../store/store');
-const bookFile = require('../../middleware/bookFile');
+const bookFile = require('../middleware/bookFile');
 
 const router = express.Router();
 router.use(express.json());
