@@ -6,7 +6,7 @@ const errorMiddleware = require('./src/middleware/404');
 
 const app = express();
 // Указываем Express обслуживать статические файлы из папки "public"
-// Это позволит серверу обслуживать файлы из папки "public" без необходимости написания отдельных обработчиков маршрутов для каждого файла
+// Это позволит серверу обслуживать файлы из папки "/src/style" без необходимости написания отдельных обработчиков маршрутов для каждого файла
 app.use(express.static(__dirname + '/src/style'));
 
 //миделлавр для разбора форм
@@ -31,8 +31,7 @@ app.use('/api/books/:id/download', express.static(__dirname + '/public/books'));
 // использование миделвара с ошибкой
 app.use(errorMiddleware);
 
-// const PORT = process.env.PORT || 3005;
-const PORT = 3005;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running ${PORT}`);
 });
