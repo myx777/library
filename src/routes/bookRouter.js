@@ -6,7 +6,7 @@ const bookFile = require('../middleware/bookFile');
 const router = express.Router();
 router.use(express.json());
 
-const COUNTER_SERVICE_URL = 'http://localhost:3004';
+const COUNTER_SERVICE_URL = 'http://counter:3001';
 
 // отрисовка страницы загрузки новой книги
 router.get('/books/create', (req, res) => {
