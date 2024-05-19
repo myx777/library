@@ -1,29 +1,53 @@
-#### Задание 1
+библиотека
 
-Обновить структуру роутинга проекта с использованием **express.Router()**.
+#### 1. Запрос(ы) для вставки данных минимум о двух книгах в коллекцию books
 
-#### Задание 2
+<details>
+<summary>Задание 1</summary>
 
-Установить в проект пакет [**multer**](https://github.com/expressjs/multer/blob/master/doc/README-ru.md)
-и создать middleware для загрузки файла книги.
-Созданную middleware подключить и обработать в роутах создания данных о книге.
+```
+db.collection('books').insertMany(
+    {
+      title: "Война и мир",
+      description: "книга о любви",
+      authors: "Л. Толстой"
+    },
+    {
+      title: "Колобок",
+      description: "о выпендреже",
+      authors: "Народ"
+    },
+);
+```
+</details>
 
-Каждый экземпляр книги должен содержать следующую структуру данных:
+#### 2. Запрос для поиска полей документов коллекции books по полю title
 
-```javascript
-{
-  id: "string",
-  title: "string",
-  description: "string",
-  authors: "string",
-  favorite: bool,
-  fileCover: "string",
-  fileName: "string",
-  fileBook: "string"  //новое поле
-}
-``` 
+<details>
+<summary>Задание 2</summary>
 
-#### Задание 3
+```
+db.collection('books').find({ title: "Война и мир" });
 
-Создать роут `GET: /api/books/:id/download`.
-Метод отдаёт на скачиваение файл книги по её **:id**.
+```
+</details>
+
+
+#### 3. запрос для редактирования полей: description и authors коллекции books по _id записи.
+
+<details>
+<summary>Задание 3</summary>
+
+```
+db.books.updateOne(
+    { id: 1 },
+    { 
+        $set: {
+            description: "новое описание",
+            authors: "новые авторы"
+        }
+    }
+);
+
+```
+</details>
