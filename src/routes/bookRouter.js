@@ -45,14 +45,30 @@ router.get('/books/view/:id', async (req, res) => {
     }
 });
 
-// запрос всех книг
 router.get('/books', async (req, res) => {
-    const books = await Books.find().select('-__v');
-    res.render('book/index', {
-        title: 'Books',
-        books: books,
-    });
+    try {
+        const books = await Books.find().select('-__v');
+
+        // Check if any books were found
+        if (!books.length) {
+            // Handle no books case (e.g., display a message)
+            return res.render('book/index', {
+                title: 'Books',
+                message: 'No books found in the database.',
+            });
+        }
+
+        console.log(books);
+        res.render('book/index', {
+            title: 'Books',
+            books: books,
+        });
+    } catch (e) {
+        console.error('Error reading books', e);
+        res.status(500).send('Error retrieving books'); // Handle error appropriately
+    }
 });
+
 
 // запрос книги по id
 router.get('/books/update/:id', (req, res) => {
