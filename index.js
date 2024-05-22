@@ -7,22 +7,23 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-const URL_DB = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
+const { dbUser, dbPassword, dbName, dbHost, port } = require('./config.js');
+
+const DB_Url = `mongodb://${dbUser}:${dbPassword}@${dbHost}/${dbName}`;
 
 // Указываем Express обслуживать статические файлы из папки "public"
 // Это позволит серверу обслуживать файлы из папки "/src/style" без необходимости написания отдельных обработчиков маршрутов для каждого файла
 app.use(express.static(__dirname + '/src/style'));
 
 //миделлавр для разбора форм
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
-async function start (URL_DB, PORT) {
+async function start(DB_Url, port) {
     try {
-        await mongoose.connect(URL_DB);
+        await mongoose.connect(DB_Url);
         console.log("Подключен к базе данных")
-        app.listen(PORT)
-        console.log(`Сервер на порту: ${PORT}`)
+        app.listen(port)
+        console.log(`Сервер на порту: ${port}`)
     } catch (e) {
         console.error("Ошибка:", e)
     }
@@ -47,7 +48,7 @@ app.use('/api/books/:id/download', express.static(__dirname + '/public/books'));
 // использование миделвара с ошибкой
 app.use(errorMiddleware);
 
-start(URL_DB, PORT)
+start(DB_Url, port)
     .catch((err) => {
         console.error(err);
     })

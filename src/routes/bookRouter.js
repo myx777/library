@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(express.json());
 
-const COUNTER_SERVICE_URL = 'http://counter:3001';
+const { counterUrl } = require('../../config');
 
 // ToDo!
 // отрисовка страницы загрузки новой книги
@@ -26,8 +26,8 @@ router.get('/books/view/:id', async (req, res) => {
         const fetch = (await import('node-fetch')).default;
 
         // Инкремент счётчика для книги
-        await fetch(`${COUNTER_SERVICE_URL}/counter/${id}/incr`, {method: 'POST'});
-        let response = await fetch(`${COUNTER_SERVICE_URL}/counter/${id}`);
+        await fetch(`${counterUrl}/counter/${id}/incr`, {method: 'POST'});
+        let response = await fetch(`${counterUrl}/counter/${id}`);
 
         // Чтение данных счётчика как JSON
         const counterData = await response.json();
