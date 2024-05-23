@@ -1,9 +1,37 @@
 <%- include('../port/layout-start', { title: title }) %>
 <%- include('../port/menu') %>
 
-<form action="/api/books" method="post" enctype="multipart/form-data">
-	<input type="file" name="book">
-	<button type="submit">Загрузить книгу</button>
-</form>
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <form action="/api/books" method="post" enctype="multipart/form-data" class="mt-5">
+                <input type="file" name="book" required/>
+                <div class="form-group">
+                    <input type="text" name="title" placeholder="Title" required/>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="author" placeholder="Author" required/>
+                </div>
+                <div class="form-group">
+                    <textarea name="description" placeholder="Description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="favorite" placeholder="Favorite"/>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="fileCover" placeholder="File Cover"/>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="fileName" placeholder="file Name" required/>
+                </div>
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-primary">Загрузить книгу</button>
+                </div>
+                >
+            </form>
+        </div>
+    </div>
+</div>
 
 <%- include('../port/layout-end') %>

@@ -42,9 +42,6 @@ app.use('/api', bookRouter);
 //роуты юзера (логин)
 app.use('/api', userRouter);
 
-//загрузка книги
-app.use('/api/books/:id/download', express.static(__dirname + '/public/books'));
-
 // использование миделвара с ошибкой
 app.use(errorMiddleware);
 

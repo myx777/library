@@ -3,17 +3,36 @@
 
 <h2><%= title %></h2>
 <div class="row">
-	<div class="card">
-		<div class="card-body">
-			<% for (let key in book) { %>
-			<h4><%= key %>:</h4>
-			<p><%= book[key] %></p>
-			<% } %>
-			<!-- Добавляем вывод значения счётчика просмотров -->
-			<h4>Количество просмотров:</h4>
-			<p><%= counter %></p>
+	<div class="d-flex align-items-center">
+		<div class="flex-shrink-0">
+			<img src="<%= book.fileCover %>" alt="<%= book.fileCover %>" style="max-height: 400px">
+
+		</div>
+		<div class="flex-grow-1 ms-3">
+			<div class="card-body">
+				<h4>Название:</h4>
+				<p><%= book.title %></p>
+
+				<h4>Описание:</h4>
+				<p><%= book.description %></p>
+
+				<h4>Авторы:</h4>
+				<p><%= book.authors %></p>
+
+				<h4>Фаворит:</h4>
+				<p><%= book.favorite %></p>
+
+				<h4>Название файла:</h4>
+				<p><%= book.fileName %></p>
+
+			</div>
 		</div>
 	</div>
+	<!-- Добавляем вывод значения счётчика просмотров -->
+	<h4>Количество просмотров:</h4>
+	<p><%= counter %></p>
 </div>
 
 <%- include('../port/layout-end') %>
+
+

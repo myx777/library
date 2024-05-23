@@ -1,37 +1,37 @@
 const express = require('express');
-const bookFile = require('../middleware/bookFile');
-const Books = require('../modules/books');
-
+const bookUpload = require('../middleware/bookUpload');
+const bookSchema = require('../modules/bookSchema');
 const router = express.Router();
+const {counterUrl} = require('../../config');
+const {v4: uuidv4} = require('uuid');
+const fs = require('fs');
+const path = require('path'); // Импортируем модуль path
+
+/**
+ * все роуты связанные с книгами тут
+ */
 
 router.use(express.json());
 
-const { counterUrl } = require('../../config');
-
-// ToDo!
 // отрисовка страницы загрузки новой книги
-router.get('/books/create', async (req, res) => {
+router.get('/books/create', (req, res) => {
     res.render('book/create', {
         title: 'Загрузка книги',
     });
 });
 
-// ToDo!
 // отрисовка страницы просмотра книги
 router.get('/books/view/:id', async (req, res) => {
     const {id} = req.params;
 
     try {
-        const book = Books.findById(id).select('-__v')
-        const fetch = (await import('node-fetch')).default;
-
+        const book = await bookSchema.findById(id).select('-__v');
         // Инкремент счётчика для книги
-        await fetch(`${counterUrl}/counter/${id}/incr`, {method: 'POST'});
-        let response = await fetch(`${counterUrl}/counter/${id}`);
-
+        const url = `${counterUrl}/counter/${id}`;
+        await fetch(`${url}/incr`, {method: 'POST'});
+        let response = await fetch(`${url}`);
         // Чтение данных счётчика как JSON
         const counterData = await response.json();
-
         const counter = counterData.counter;
 
         res.render('book/view', {
@@ -45,20 +45,15 @@ router.get('/books/view/:id', async (req, res) => {
     }
 });
 
+// роут всех книг
 router.get('/books', async (req, res) => {
     try {
-        const books = await Books.find().select('-__v');
+        const books = await bookSchema.find().select('-__v');
 
-        // Check if any books were found
-        if (!books.length) {
-            // Handle no books case (e.g., display a message)
-            return res.render('book/index', {
-                title: 'Books',
-                message: 'No books found in the database.',
-            });
+        if (books.length === 0) {
+            console.error('No books found.');
         }
 
-        console.log(books);
         res.render('book/index', {
             title: 'Books',
             books: books,
@@ -69,78 +64,106 @@ router.get('/books', async (req, res) => {
     }
 });
 
-
-// запрос книги по id
-router.get('/books/update/:id', (req, res) => {
+// обновление книги
+router.get('/books/update/:id', async (req, res) => {
     const {id} = req.params;
-    const {books} = store;
-    const idx = books.findIndex((el) => el.id === id);
 
-    if (idx !== -1) {
+    try {
+        const book = await bookSchema.findById(id).select('-__v');
+
         res.render('book/update', {
             title: 'book | update',
-            book: books[idx],
+            book: book,
         });
-    } else {
+    } catch (e) {
+        console.error(e);
         res.status(404).redirect('/404');
     }
 });
 
-// исправление книги
-router.post('/books/update/:id', (req, res) => {
-    const {books} = store;
+// Исправление книги
+router.post('/books/update/:id', async (req, res) => {
     const {id} = req.params;
-    const idx = books.findIndex((el) => el.id === id);
+    try {
+        const book = await bookSchema.findById(id).select('-__v');
 
-    if (idx !== -1) {
-        const updatedBook = {...books[idx]};
+        if (!book) {
+            return res.status(404).send('Book not found');
+        }
 
-        if (req.body.title) updatedBook.title = req.body.title;
-        if (req.body.author) updatedBook.author = req.body.author;
-        if (req.body.description) updatedBook.description = req.body.description;
-        if (req.body.favorite !== undefined) updatedBook.favorite = req.body.favorite;
-        if (req.body.fileCover) updatedBook.fileCover = req.body.fileCover;
-        if (req.body.fileName) updatedBook.fileName = req.body.fileName;
+        if (req.body.title) book.title = req.body.title;
+        if (req.body.author) book.author = req.body.author;
+        if (req.body.description) book.description = req.body.description;
+        if (req.body.favorite !== undefined) book.favorite = req.body.favorite;
+        if (req.body.fileCover) book.fileCover = req.body.fileCover;
+        if (req.body.fileName) book.fileName = req.body.fileName;
 
-        books[idx] = updatedBook;
+        await book.save();
+
         res.redirect(301, '/api/books');
-    } else {
-        res.status(404).redirect('/404');
+    } catch (e) {
+        console.error(e);
+        res.status(500).send('Internal Server Error');
     }
 });
+
 
 // удаление книги
-router.post('/books/:id', (req, res) => {
-    const {books} = store;
+router.post('/books/:id', async (req, res) => {
     const {id} = req.params;
-    const idx = books.findIndex((el) => el.id === id);
+    try {
+        const book = await bookSchema.findById(id);
+        if (!book) {
+            return res.status(404).redirect('/404');
+        }
 
-    if (idx !== -1) {
-        books.splice(idx, 1);
+        // Удаляем файл книги с сервера
+        // ToDo! запутался с путями
+        // const filePath = path.join(__dirname, 'public/books', book.fileName); // Путь к файлу книги на сервере
+        // fs.unlinkSync(filePath);
+
+        await bookSchema.findByIdAndDelete(id);
         res.redirect(301, '/api/books');
-    } else {
+    } catch (e) {
+        console.error(e);
         res.status(404).redirect('/404');
     }
 });
 
-// добавление книги
-router.post('/books', bookFile.single('book'), (req, res) => {
-    if (req.file) {
-        const {path, originalname} = req.file;
+// сначала генерирую _id и передаю ее в следующую функцию, а в ней сохраняю книгу
+router.post('/books', async (req, res, next) => {
+    try {
+        const bookId = uuidv4();
 
-        const newBook = new Book(
-            req.body.title,
-            req.body.author,
-            req.body.description,
-            false,
-            req.body.fileCover,
-            originalname,
-            path,
-        );
-        store.books.push(newBook);
+        // Передаем _id книги в req для использования в multer
+        req.bookId = bookId;
+
+        next();
+    } catch (error) {
+        console.error("Ошибка сервера при добавлении книги" + error);
+        res.status(500);
+    }
+}, bookUpload.single('book'), async (req, res) => {
+
+    try {
+        // Обновляем информацию о файле в записи книги
+        const newBook = new bookSchema({
+            _id: req.bookId,
+            title: req.body.title,
+            author: req.body.author,
+            description: req.body.description,
+            favorite: req.body.favorite,
+            fileCover: req.body.fileCover,
+            fileName: `${req.bookId}${path.extname(req.file.originalname)}`,
+        });
+
+        // Сохраняем новую книгу в базе данных
+        await newBook.save();
+
         res.redirect(301, '/api/books');
-    } else {
-        res.status(404).redirect('/404');
+    } catch (error) {
+        console.error("Ошибка сервера при добавлении книги" + error);
+        res.status(500);
     }
 });
 
