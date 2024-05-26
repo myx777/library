@@ -8,10 +8,11 @@ const bookSchema = new Schema({
     title: {
         type: String,
         default: "title",
+        required: true,
     },
     description: {
         type: String,
-        default: "description",
+        required: true,
     },
     authors: {
         type: String,
