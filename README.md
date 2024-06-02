@@ -15,3 +15,7 @@ POST /api/user/login
 POST /api/user/signup
 ```
 2. Настройте локальную аутентификацию с помощью PassportJS.
+
+добавил npm install bcrypt - хэширования паролей
+( установи пайтон ``apk add --no-cache make gcc g++ python3``
+)

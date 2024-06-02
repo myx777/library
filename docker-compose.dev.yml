@@ -1,6 +1,6 @@
 services:
   counter:
-    image: node:20.10-alpine
+    image: node:alpine
     working_dir: /counterService
     ports:
       - 3001:3001
@@ -19,7 +19,8 @@ services:
       - .:/app
     depends_on:
       - counter
-    command: npm run start
+    command: >
+      sh -c "apk add --no-cache make gcc g++ python3 && npm run server" // пайтон для bcrypt
     networks:
       - test-network
 

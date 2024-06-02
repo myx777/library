@@ -1,19 +1,19 @@
 <%- include('../port/layout-start', { title: title }) %>
 <%- include('../port/menu') %>
 
-<form>
+<h1><%= title %></h1>
+<form action="/api/user" method="post">
     <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email alhtc</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">Введите свой email адрес</div>
+        <label for="exampleInputNickname" class="form-label">Nick</label>
+        <input name="user" type="text" class="form-control" id= "exampleInputNickname" aria-describedby="emailHelp" placeholder="никнейм или адрес электронной почты" required>
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Пароль</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="пароль" required>
     </div>
     <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <label class="form-check-label" for="exampleCheck1">Запомнить меня</label>
     </div>
     <button type="submit" class="btn btn-primary">Войти</button>
 </form>
