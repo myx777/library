@@ -13,7 +13,15 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    firstName: {
+        type: String,
+        unique: true,
+    },
+    secondName: {
+        type: String,
+        unique: true,
+    },
 });
 
 module.exports = model("User", UserSchema);
