@@ -21,10 +21,6 @@
 
 				<h4>Фаворит:</h4>
 				<p><%= book.favorite %></p>
-
-				<h4>Название файла:</h4>
-				<p><%= book.fileName %></p>
-
 			</div>
 		</div>
 	</div>
@@ -32,6 +28,13 @@
 	<h4>Количество просмотров:</h4>
 	<p><%= counter %></p>
 </div>
+<aside class="row">
+	<h2>Комментарии:</h2>
+	<div class="d-flex align-items-center">
+		<%- include('../comments/comments') %>
+	</div>
+
+</aside>
 
 <%- include('../port/layout-end') %>
 
