@@ -1,4 +1,4 @@
-const {Schema, model} = require("mongoose");
+const {Schema, model} = require('mongoose');
 
 const bookSchema = new Schema({
     _id: {
@@ -7,7 +7,7 @@ const bookSchema = new Schema({
     },
     title: {
         type: String,
-        default: "title",
+        default: 'title',
         required: true,
     },
     description: {
@@ -16,20 +16,20 @@ const bookSchema = new Schema({
     },
     authors: {
         type: String,
-        default: "authors",
+        default: 'authors',
     },
     favorite: {
         type: String,
-        default: "favorite",
+        default: 'favorite',
     },
     fileCover: {
         type: String,
-        default: "fileCover",
+        default: 'fileCover',
     },
     fileName: {
         type: String,
-        default: "fileName",
+        default: 'fileName',
     },
 });
 
-module.exports = model("Books", bookSchema);
+module.exports = model('Books', bookSchema);

@@ -142,7 +142,7 @@ router.post('/books', async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.error("Ошибка сервера при добавлении книги" + error);
+        console.error('Ошибка сервера при добавлении книги' + error);
         res.status(500);
     }
 }, bookUpload.single('book'), async (req, res) => {
@@ -164,7 +164,7 @@ router.post('/books', async (req, res, next) => {
 
         res.redirect(301, '/api/books');
     } catch (error) {
-        console.error("Ошибка сервера при добавлении книги" + error);
+        console.error('Ошибка сервера при добавлении книги' + error);
         res.status(500);
     }
 });

@@ -107,7 +107,7 @@ router.get('/user/profile',
     },
     (req, res) => {
         res.render('./user/profile', {
-            title: "Профиль",
+            title: 'Профиль',
             user: req.user,
         });
     });
