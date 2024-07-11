@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 const express = require('express');
 const indexRouter = require('./src/routes/indexRouter');
 const bookRouter = require('./src/routes/bookRouter');

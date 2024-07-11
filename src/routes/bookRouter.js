@@ -1,13 +1,15 @@
+import {BooksRepository} from "../inversify/BooksRepository";
+import {container} from "../inversify/container"
+
 const express = require('express');
 const bookUpload = require('../middleware/bookUpload');
-const bookSchema = require('../modules/bookSchema');
 const router = express.Router();
 const {counterUrl} = require('../../config');
 const {v4: uuidv4} = require('uuid');
 const fs = require('fs');
 const path = require('path'); // Импортируем модуль path
 
-
+const repo = container.get(BooksRepository);
 
 /**
  * все роуты связанные с книгами тут
@@ -27,7 +29,7 @@ router.get('/books/view/:id', async (req, res) => {
     const {id} = req.params;
 
     try {
-        const book = await bookSchema.findById(id).select('-__v');
+        const book = await repo.getBook(id)
         // Инкремент счётчика для книги
         const url = `${counterUrl}/counter/${id}`;
         await fetch(`${url}/incr`, {method: 'POST'});
@@ -50,7 +52,7 @@ router.get('/books/view/:id', async (req, res) => {
 // роут всех книг
 router.get('/books', async (req, res) => {
     try {
-        const books = await bookSchema.find().select('-__v');
+        const books = await repo.getBooks();
 
         if (books.length === 0) {
             console.error('No books found.');
@@ -71,7 +73,7 @@ router.get('/books/update/:id', async (req, res) => {
     const {id} = req.params;
 
     try {
-        const book = await bookSchema.findById(id).select('-__v');
+        const book = await repo.getBook(id);
 
         res.render('book/update', {
             title: 'book | update',
@@ -87,7 +89,7 @@ router.get('/books/update/:id', async (req, res) => {
 router.post('/books/update/:id', async (req, res) => {
     const {id} = req.params;
     try {
-        const book = await bookSchema.findById(id).select('-__v');
+        const book = await repo.getBook(id);
 
         if (!book) {
             return res.status(404).send('Book not found');
@@ -114,7 +116,7 @@ router.post('/books/update/:id', async (req, res) => {
 router.post('/books/:id', async (req, res) => {
     const {id} = req.params;
     try {
-        const book = await bookSchema.findById(id);
+        const book = await repo.getBook(id);
         if (!book) {
             return res.status(404).redirect('/404');
         }
@@ -124,7 +126,7 @@ router.post('/books/:id', async (req, res) => {
         // const filePath = path.join(__dirname, 'public/books', book.fileName); // Путь к файлу книги на сервере
         // fs.unlinkSync(filePath);
 
-        await bookSchema.findByIdAndDelete(id);
+        await repo.deleteBook(id);
         res.redirect(301, '/api/books');
     } catch (e) {
         console.error(e);
@@ -149,7 +151,7 @@ router.post('/books', async (req, res, next) => {
 
     try {
         // Обновляем информацию о файле в записи книги
-        const newBook = new bookSchema({
+        const newBook = await repo.createBook({
             _id: req.bookId,
             title: req.body.title,
             author: req.body.author,
@@ -160,7 +162,7 @@ router.post('/books', async (req, res, next) => {
         });
 
         // Сохраняем новую книгу в базе данных
-        await newBook.save();
+        // await newBook.save();
 
         res.redirect(301, '/api/books');
     } catch (error) {
