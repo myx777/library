@@ -1,5 +1,7 @@
-const multer = require('multer');
-const path = require('path');
+import multer from 'multer';
+import path from 'path';
+
+// multer для сохранения на диск сервера
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -10,6 +12,5 @@ const storage = multer.diskStorage({
     },
 });
 
-const bookUpload = multer({ storage });
+export const bookUpload = multer({storage});
 
-module.exports = bookUpload;

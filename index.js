@@ -1,17 +1,17 @@
 import 'reflect-metadata';
 
-const express = require('express');
-const indexRouter = require('./src/routes/indexRouter');
-const bookRouter = require('./src/routes/bookRouter');
-const userRouter = require('./src/routes/userRouter');
-const errorMiddleware = require('./src/middleware/404');
-const mongoose = require('mongoose');
-const session = require("express-session");
-const passport = require("passport");
-const { dbUser, dbPassword, dbName, dbHost, port } = require('./config.js');
-const http = require('http');
-const socketIO = require('socket.io');
-const path = require('path');
+import express from 'express';
+import indexRouter from'./src/routes/indexRouter';
+import bookRouter from './src/routes/bookRouter';
+import userRouter from './src/routes/userRouter';
+import errorMiddleware from './src/middleware/404';
+import mongoose from 'mongoose';
+import session from "express-session";
+import passport from "passport";
+import { dbUser, dbPassword, dbName, dbHost, port } from './config.ts';
+import http from 'http';
+import socketIO from 'socket.io';
+import path from 'path';
 
 
 const app = express();

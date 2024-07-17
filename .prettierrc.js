@@ -1,4 +1,4 @@
-// prettier.config.js, .prettierrc.js, prettier.config.cjs, or .prettierrc.cjs
+// prettier.config.ts, .prettierrc.js, prettier.config.cjs, or .prettierrc.cjs
 
 /** @type {import("prettier").Config} */
 module.exports = {

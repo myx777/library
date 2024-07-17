@@ -1,10 +1,10 @@
-import { Document } from 'mongoose';
-
-export interface IBook extends Document {
+export interface IBook {
+        _id: string;
         title: string;
+        author: string;
         description: string;
-        authors?: string;
-        favorite?: string;
-        fileCover?: string;
-        fileName?: string;
+        favorite: boolean;
+        fileCover: string;
+        fileName: string;
 }
+

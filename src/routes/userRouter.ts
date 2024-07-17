@@ -3,7 +3,7 @@ const router = express.Router();
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const userSchema = require('../modules/userSchema');
+const userSchema = require('../models/UserModel');
 const bcrypt = require('bcrypt');
 
 // Функция верификации
