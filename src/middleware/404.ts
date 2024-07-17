@@ -1,4 +1,6 @@
-module.exports = (req, res) => {
+import { Request, Response } from 'express';
+
+export const notFoundHandler = (req: Request, res: Response) => {
     res.status(404).render('errors/404', {
         title: 'Такой страницы нет, код 404',
     });

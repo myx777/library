@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 
 import express from 'express';
-import indexRouter from'./src/routes/indexRouter';
+import indexRouter from './src/routes/indexRouter';
 import bookRouter from './src/routes/bookRouter';
 import userRouter from './src/routes/userRouter';
 import errorMiddleware from './src/middleware/404';
 import mongoose from 'mongoose';
 import session from "express-session";
 import passport from "passport";
-import { dbUser, dbPassword, dbName, dbHost, port } from './config.ts';
+import { dbUser, dbPassword, dbName, dbHost, port } from './src/config.ts';
 import http from 'http';
 import socketIO from 'socket.io';
 import path from 'path';

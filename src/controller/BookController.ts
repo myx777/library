@@ -5,7 +5,8 @@ import BookService from "../service/BookService";
 import fetch from 'node-fetch';
 import path from "path";
 import {IBook} from "../interfaces/IBook";
-import {config} from "../../config";
+import {config} from "../config";
+import CounterData from "../interfaces/CounterData";
 
 @injectable()
 export default class BookController {
@@ -33,7 +34,7 @@ export default class BookController {
                 throw new Error('Failed to fetch counter data');
             }
             // Чтение данных счётчика как JSON
-            const counterData = await response.json();
+            const counterData = await response.json() as CounterData;
             const counter = counterData.counter;
 
             res.render('book/view', {
@@ -132,7 +133,7 @@ export default class BookController {
             const bookId = req.bookId;
 
             const newBook: IBook = {
-                _id: bookId,
+                bookId: bookId,
                 title: req.body.title,
                 author: req.body.author,
                 description: req.body.description,

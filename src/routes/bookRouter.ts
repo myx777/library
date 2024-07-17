@@ -1,7 +1,7 @@
 import {container} from "../inversify/container"
 import express from "express";
 
-import {config} from "../../config";
+import {config} from "../config";
 
 import {unicBookId} from "../middleware/unicBookId";
 import BookController from "../controller/BookController";

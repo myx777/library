@@ -9,7 +9,9 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./src",
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "experimentalDecorators": true,  // Включение экспериментальных декораторов
+    "emitDecoratorMetadata": true  // Генерация метаданных для декораторов
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

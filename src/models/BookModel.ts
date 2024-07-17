@@ -4,17 +4,18 @@ import { IBook } from '../interfaces/IBook';
 // Создание интерфейса IBookDocument, который расширяет интерфейс IBook и Document
 interface IBookDocument extends IBook, Document {}
 
-// Создание интерфейса IBookModel, который расширяет Model и включает IBookDocument
+// Создание интерфейса IBookDocument, который расширяет интерфейс IBook и Document
 interface IBookModel extends Model<IBookDocument> {}
 
 // Создание схемы книги
 const bookSchema = new Schema<IBookDocument>({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    authors: { type: String, default: 'authors' },
+    author: { type: String, default: 'author' },
     favorite: { type: Boolean, default: false },
     fileCover: { type: String, default: 'fileCover' },
     fileName: { type: String, default: 'fileName' },
+    bookId: {type: String, required: true},
 });
 
 // Создание модели книги с указанием типа документа
